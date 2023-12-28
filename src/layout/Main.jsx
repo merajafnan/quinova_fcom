@@ -8,10 +8,6 @@ const Main = () => {
         <div>
             <Navbar />
             <Outlet />
-
-            <footer>
-                Footer
-            </footer>
         </div>
     )
 }
