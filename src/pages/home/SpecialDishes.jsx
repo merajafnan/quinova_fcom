@@ -83,8 +83,7 @@ const SpecialDishes = () => {
     return (
         <div className='section-container my-20 relative'>
 
-            <div className='flex flex-wrap justify-between'>
-                
+            <div className='flex flex-wrap justify-between'>    
                 <div className='text-left xl:w-1/2'>
                     <p className='subtitle'>
                         Special Dishes
@@ -93,7 +92,6 @@ const SpecialDishes = () => {
                         Standout Dishes From Our Menu
                     </h2>
                 </div>
-
 
                 {/* Arrow button */}
                 <div className='right-3 top-8 mb-10 md:mr-24 '>
@@ -104,10 +102,7 @@ const SpecialDishes = () => {
                         <FaAngleRight className='w-8 h-8 p-1' />
                     </button>
                 </div>
-
             </div>
-
-
 
             <Slider ref={slider} {...settings} className='overflow-hidden mt-10 space-x-5'>
                 {
