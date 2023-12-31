@@ -82,25 +82,32 @@ const SpecialDishes = () => {
     };
     return (
         <div className='section-container my-20 relative'>
-            <div className='text-left xl:w-1/2'>
-                <p className='subtitle'>
-                    Special Dishes
-                </p>
-                <h2 className='title'>
-                    Standout Dishes From Our Menu
-                </h2>
+
+            <div className='flex flex-wrap justify-between'>
+                
+                <div className='text-left xl:w-1/2'>
+                    <p className='subtitle'>
+                        Special Dishes
+                    </p>
+                    <h2 className='title'>
+                        Standout Dishes From Our Menu
+                    </h2>
+                </div>
+
+
+                {/* Arrow button */}
+                <div className='right-3 top-8 mb-10 md:mr-24 '>
+                    <button onClick={() => slider?.current?.slickPrev()} className='btn p-2 rounded-full ml-5'>
+                        <FaAngleLeft className='w-8 h-8 p-1' />
+                    </button>
+                    <button onClick={() => slider?.current?.slickNext()} className='btn p-2 rounded-full ml-5 bg-green text-white '>
+                        <FaAngleRight className='w-8 h-8 p-1' />
+                    </button>
+                </div>
+
             </div>
 
 
-            {/* Arrow button */}
-            <div className='md:absolute right-3 top-8 mb-10 md:mr-24'>
-                <button onClick={() => slider?.current?.slickPrev()} className='btn p-2 rounded-full ml-5'>
-                    <FaAngleLeft className='w-8 h-8 p-1' />
-                </button>
-                <button onClick={() => slider?.current?.slickNext()} className='btn p-2 rounded-full ml-5 bg-green text-white '>
-                    <FaAngleRight className='w-8 h-8 p-1' />
-                </button>
-            </div>
 
             <Slider ref={slider} {...settings} className='overflow-hidden mt-10 space-x-5'>
                 {
@@ -108,7 +115,7 @@ const SpecialDishes = () => {
                         <Card key={i} item={item}></Card>
                     ))
                 }
-            </Slider>  
+            </Slider>
 
         </div>
     )
