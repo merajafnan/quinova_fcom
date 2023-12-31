@@ -108,7 +108,7 @@ const SpecialDishes = () => {
                         <Card key={i} item={item}></Card>
                     ))
                 }
-            </Slider>
+            </Slider>  
 
         </div>
     )
