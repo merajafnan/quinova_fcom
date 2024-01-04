@@ -8,6 +8,10 @@ const Menu = () => {
     const [filteredItems, setFilteredItems] = useState([]);
     const [selectedCategory, setSelectedCategory] = useState("all");
     const [sortOption, setSortOption] = useState('default');
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(8); // Number of page items
+
+
 
     //Loading data
     useEffect(() => {
@@ -38,12 +42,14 @@ const Menu = () => {
 
         setFilteredItems(filtered);
         setSelectedCategory(index);
+        setCurrentPage(1);
     };
 
     // Show All Data
     const showAll = () => {
         setFilteredItems(menu);
         setSelectedCategory("all");
+        setCurrentPage(1);
     }
 
     // Sorting based on A-Z, Z-A, Low to High or High to Low
@@ -76,10 +82,16 @@ const Menu = () => {
         }
 
         setFilteredItems(sortedItems);
+        setCurrentPage(1);
 
     }
 
+    // Logic for Pagegination
 
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = filteredItems.slice(indexOfFirstItem, indexOfLastItem)
+    const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
 
     return (
@@ -119,7 +131,7 @@ const Menu = () => {
                     {/* Sorting Filter */}
                     <div>
                         <div className='bg-black p-2'>
-                            <FaFilter className='h-4 w-4 text-white'/>
+                            <FaFilter className='h-4 w-4 text-white' />
                         </div>
 
                         {/* Sorting Options */}
@@ -138,13 +150,31 @@ const Menu = () => {
                 {/* Product cart */}
                 <div className='grid md:grid-cols-4 sm:grid-cols-1 grid-cols-1 gap-4'>
                     {
-                        filteredItems.map((item) => (
+                        currentItems.map((item) => (
                             <Card key={item._id} item={item}></Card>
                         ))
                     }
 
                 </div>
 
+            </div>
+
+            {/* Paginations Section */}
+            <div className='flex justify-center my-8'>
+                {
+                    Array.from({length: Math.ceil(filteredItems.length / itemsPerPage)}).map((_, index) => (
+                        <button
+                        key={index + 1}
+                        onClick={() => paginate(index + 1)}
+                        className={`mx-1 px-3 py-1 rounded-full ${
+                            currentPage === index + 1 ? 
+                            "bg-green text-white" : 
+                            "bg-gray-200"}`}
+                        >
+                            {index +1}
+                        </button>
+                    ))
+                }
             </div>
         </div>
     )
