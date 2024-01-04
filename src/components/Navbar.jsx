@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logo from '/logo.png'
 import { MdWifiCalling3 } from "react-icons/md";
 import { FaRegUser } from "react-icons/fa";
 import Modal from './Modal';
+import { AuthContext } from '../contexts/AuthProvider';
 
 
 const Navbar = () => {
     const [isSticky, setSticky] = useState(false);
+
+    const {user} = useContext(AuthContext)
+
     // Handle Scroll functions
     useEffect(() => {
         const handleScroll = () => {

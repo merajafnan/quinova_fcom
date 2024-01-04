@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
+import { AuthContext } from '../contexts/AuthProvider';
 
 
 const Modal = () => {
@@ -14,7 +15,29 @@ const Modal = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => console.log(data)
+    const { signUpWithGoogle, login } = useContext(AuthContext);
+    const [errorMessage, setErrorMessage] = useState("")
+
+    const onSubmit = (data) => {
+        const email = data.email;
+        const password = data.password;
+        // console.log(email,password);
+        login(email, password).then((result) => {
+            const user = result.user;
+            alert("Login Sucessfully")
+        }).catch((error) => console.log(error))
+    }
+
+    // Google Sign In
+    const handleLogin = () => {
+        signUpWithGoogle().then((result) => {
+            const user = result.user;
+            alert("Login Sucessfully")
+        }).catch((error) => {
+            const errorMessage = error.message;
+            setErrorMessage("Incorrect Email/Password")
+        })
+    }
 
     return (
         <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
@@ -53,13 +76,18 @@ const Modal = () => {
                                 <a href="#" className="label-text-alt link link-hover mt-1">Forgot password?</a>
                             </label>
                         </div>
+                        
                         {/* Error Text */}
+                        {
+                            errorMessage ? <p className='text-red text-xs italic'>{setErrorMessage}</p> : ""
+                        }
 
                         {/* Login Button */}
                         <div className="form-control mt-6">
                             <input type='submit' value="Login" className="btn bg-green text-white"></input>
                         </div>
                         <p className='text-center my-2'>Don't have an account ? <Link to="/signup" className='underline text-red '> Sign Up! </Link></p>
+
                         {/* Close Button */}
                         <button
                             htmlFor="my_modal_5"
@@ -68,11 +96,12 @@ const Modal = () => {
                         >
                             ✕
                         </button>
+
                     </form>
 
                     {/* Sign in Via Social Media */}
                     <div className='space-x-3 text-center mb-5'>
-                        <button className="btn btn-circle hover:bg-green hover:text-white text-xl">
+                        <button className="btn btn-circle hover:bg-green hover:text-white text-xl" onClick={handleLogin}>
                             <FaGoogle />
                         </button>
                         <button className="btn btn-circle hover:bg-green hover:text-white text-xl">
