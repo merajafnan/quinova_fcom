@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -18,6 +18,13 @@ const Modal = () => {
     const { signUpWithGoogle, login } = useContext(AuthContext);
     const [errorMessage, setErrorMessage] = useState("")
 
+    // redirecting to homepage or specific page
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
+
+
+
     const onSubmit = (data) => {
         const email = data.email;
         const password = data.password;
@@ -25,7 +32,13 @@ const Modal = () => {
         login(email, password).then((result) => {
             const user = result.user;
             alert("Login Sucessfully")
-        }).catch((error) => console.log(error))
+            document.getElementById('my_modal_5').close()
+            navigate(from, { replace: true });
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage("Incorrect Email/Password")
+        })
     }
 
     // Google Sign In
@@ -33,12 +46,13 @@ const Modal = () => {
         signUpWithGoogle().then((result) => {
             const user = result.user;
             alert("Login Sucessfully")
+            navigate(from, { replace: true });
         }).catch((error) => {
             const errorMessage = error.message;
             setErrorMessage("Incorrect Email/Password")
         })
     }
-
+  
     return (
         <dialog id="my_modal_5" className="modal modal-middle sm:modal-middle">
             <div className="modal-box">
@@ -76,10 +90,10 @@ const Modal = () => {
                                 <a href="#" className="label-text-alt link link-hover mt-1">Forgot password?</a>
                             </label>
                         </div>
-                        
+
                         {/* Error Text */}
                         {
-                            errorMessage ? <p className='text-red text-xs italic'>{setErrorMessage}</p> : ""
+                            errorMessage ? <p className='text-red text-xs italic'>{errorMessage}</p> : ""
                         }
 
                         {/* Login Button */}

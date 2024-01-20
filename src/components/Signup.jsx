@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
@@ -14,6 +14,11 @@ const Signup = () => {
         formState: { errors },
     } = useForm()
 
+    // redirecting to homepage or specific page
+    const location = useLocation();
+    const navigate = useNavigate();
+    const from = location.state?.from?.pathname || "/";
+
     const { createUser, login } = useContext(AuthContext);
 
     const onSubmit = (data) => {
@@ -23,7 +28,13 @@ const Signup = () => {
         createUser(email, password).then((result) => {
             const user = result.user;
             alert("Account Created Sucessfully")
-        }).catch((error) => console.log(error))
+            document.getElementById('my_modal_5').close()
+            navigate(from, { replace: true });
+        }).catch((error) => {
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            setErrorMessage("Incorrect Email/Password")
+        })
 
     }
 
