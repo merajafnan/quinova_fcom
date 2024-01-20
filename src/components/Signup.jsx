@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { FaGoogle } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaGithub } from "react-icons/fa";
 import { useForm } from 'react-hook-form';
 import Modal from './Modal';
+import { AuthContext } from '../contexts/AuthProvider';
 
 const Signup = () => {
     const {
@@ -13,7 +14,18 @@ const Signup = () => {
         formState: { errors },
     } = useForm()
 
-    const onSubmit = (data) => console.log(data)
+    const { createUser, login } = useContext(AuthContext);
+
+    const onSubmit = (data) => {
+        const email = data.email;
+        const password = data.password;
+
+        createUser(email, password).then((result) => {
+            const user = result.user;
+            alert("Account Created Sucessfully")
+        }).catch((error) => console.log(error))
+
+    }
 
     return (
         <div className='max-w-md bg-white shadow w-full mx-auto flex item center justify-center my-20'>
